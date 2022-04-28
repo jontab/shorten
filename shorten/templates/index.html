@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <h2 class="card-title">
+                    Shorten
+                </h2>
+                <hr />
+                <form method="POST" action="/shorten">
+                    <!-- URL -->
+                    <div class="form-group">
+                        <label for="url">URL to Shorten</label>
+                        <input type="text" class="form-control" id="url" name="original"
+                            placeholder="https://google.com" required>
+                    </div>
+                    <!-- Vanity -->
+                    <div class="form-group">
+                        <label for="vanity">Vanity Suffix</label>
+                        <input type="text" class="form-control" id="vanity" placeholder="topology" name="vanity">
+                        <small class="form-text text-muted">
+                            Optional. Appended to the base location of this site.
+                        </small>
+                    </div>
+                    <!-- OTP, Maybe -->
+                    {% if config["REQUIRE_OTP"] %}
+                    <div class="form-group">
+                        <label for="otp">One-Time Password</label>
+                        <input type="text" class="form-control" id="otp" name="otp" required>
+                    </div>
+                    {% endif %}
+                    <!-- Submit -->
+                    <button type="submit" class="btn btn-primary">Shorten</button>
+                </form>
+            </div>
+
+            <!-- Success -->
+            {% if link %}
+            <div class="card">
+                <h2 class="card-title">
+                    Success
+                </h2>
+                <hr />
+                <p>
+                    Result: <a href="{{ link.resolve() }}">{{ link.resolve() }}</a>
+                </p>
+            </div>
+            {% endif %}
+
+            <!-- Upload -->
+            <div class="card">
+                <h2 class="card-title">Upload</h2>
+                <hr />
+                <form method="POST" action="/upload" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <div class="custom-file">
+                            <input type="file" id="file" name="file" required>
+                            <label for="file">Select a File</label>
+                        </div>
+                    </div>
+                    <!-- OTP, Maybe -->
+                    {% if config["REQUIRE_OTP"] %}
+                    <div class="form-group">
+                        <label for="file-otp">One-Time Password</label>
+                        <input type="text" class="form-control" id="file-otp" name="otp" required>
+                    </div>
+                    {% endif %}
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+            </div>
+
+            <!-- Success -->
+            {% if filename %}
+            <div class="card">
+                <h2 class="card-title">Success</h2>
+                <hr />
+                <p>
+                    Download:
+                    <a href="{{ config['BASE_URL'] + url_for('main.raw', filename=filename) }}">
+                        {{ config['BASE_URL'] + url_for('main.raw', filename=filename) }}
+                    </a>
+                </p>
+                <p>
+                    Preview:
+                    <a href="{{ config['BASE_URL'] + url_for('main.preview', filename=filename) }}">
+                        {{ config['BASE_URL'] + url_for('main.preview', filename=filename) }}
+                    </a>
+                </p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

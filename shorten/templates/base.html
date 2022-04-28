@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required Tags -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta name="viewport" content="width=device-width" />
+
+    <!-- Icon and Title -->
+    <!-- <link rel="icon" href="path/to/fav.png"> -->
+    <title>Shorten</title>
+
+    {% block header %}{% endblock %}
+
+    <!-- Halfmoon CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/halfmoon@1.1.1/css/halfmoon-variables.min.css" rel="stylesheet" />
+</head>
+
+<body class="with-custom-webkit-scrollbars with-custom-css-scrollbars" data-dm-shortcut-enabled="true"
+    data-set-preferred-mode-onload="true">
+    <!-- Page Wrapper -->
+    <div class="page-wrapper with-navbar with-navbar-fixed-bottom">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="container">
+                <!-- Navbar Brand -->
+                <a href="{{ url_for('main.index') }}" class="navbar-brand">
+                    Shorten
+                </a>
+            </div>
+        </nav>
+
+        <!-- Sticky Alerts -->
+        <div class="sticky-alerts"></div>
+
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            {% block content %}{% endblock %}
+        </div>
+
+        <!-- Navbar Fixed Bottom -->
+        <nav class="navbar navbar-fixed-bottom">
+            <span class="navbar-text ml-auto">
+                &copy; 2022, Jonathan Abbott
+            </span>
+        </nav>
+    </div>
+
+    <!-- Halfmoon JS -->
+    <script src="https://cdn.jsdelivr.net/npm/halfmoon@1.1.1/js/halfmoon.min.js"></script>
+
+    <!-- Our JS -->
+    <script type="text/javascript">
+        function toastAlert(content) {
+            halfmoon.initStickyAlert({
+                content: content,
+                hasDismissButton: true,
+            })
+        }
+
+        {% for message in get_flashed_messages() %}
+        toastAlert("{{ message }}");
+        {% endfor %}
+    </script>
+
+    {% block footer %}{% endblock %}
+</body>
+
+</html>
